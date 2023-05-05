@@ -1,14 +1,12 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
-import {
-  createBrowserRouter,
-  RouterProvider,
-} from "react-router-dom";
+import { createBrowserRouter, RouterProvider, } from "react-router-dom";
 import './index.css'
 import Root from "./routes/Root.jsx";
 import ErrorPage from "./routes/ErrorPage";
 import Animals from './routes/Animals.jsx';
+import Donations from './routes/Donations.jsx'
 
 const router = createBrowserRouter([
   {
@@ -19,6 +17,10 @@ const router = createBrowserRouter([
   {
     path: "zivotinje",
     element: <Animals />,
+  },
+  {
+    path: "donacije",
+    element: <Donations />,
   }
 ]);
 

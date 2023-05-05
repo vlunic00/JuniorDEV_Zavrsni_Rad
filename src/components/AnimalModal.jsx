@@ -2,29 +2,26 @@ import { IoCloseCircleOutline } from 'react-icons/io5'
 import { BsFillHouseFill } from 'react-icons/bs'
 import { AnimatePresence, motion } from 'framer-motion'
 
-function AnimalModal({ data, close }){
+function AnimalModal({ close, animal }){
 
     return(
         <>
             <AnimatePresence>
                 <motion.div onClick={(e) => e.stopPropagation()} className="mx-auto my-auto bg-white rounded-lg shadow dark:bg-gray-700 w-[60%] h-[60%] flex">
-                    <img src='/images/golden-retriver.jpg' className='rounded-l-lg w-[48%]'></img>
+                    <img src={'/images/' + animal.picture} className='rounded-l-lg w-[48%]'></img>
                     <div className='right-0 w-[52%]'>
                         <button onClick={close} className='relative mt-3 left-[92%]'><IoCloseCircleOutline size={25}/></button>
-                        <h2 className='text-center font-bold text-5xl'>Loki</h2>
+                        <h2 className='text-center font-bold text-5xl'>{animal.name}</h2>
                         <div className='mx-3 mt-3'>
-                            <p className='leading-relaxed italic text-gray-500'>Zaigrani zlatni retriver. S nama od Siječnja 2023. kada je spašen od grupe ljudi koji su se prema njemu odnosili
-                                kako nijedno biće ne zaslužuje. Iako je prošao kroz dosta, Loki i dalje voli dobre ljude te jedva čeka pokazati
-                                neizmjernu sreću u domu svojih budućih vlasnika.
-                            </p>
+                            <p className='leading-relaxed italic text-gray-500'>{animal.description}</p>
                         </div>
                         <div className='mt-8 ml-4 flex justify-between'>
                             <div className='flex'>
                                 <BsFillHouseFill size={50} color={"blue"}/>
-                                <p className='font-bold text-3xl ml-4 mt-4'>NE</p>
+                                <p className='font-bold text-3xl ml-4 mt-4'>{animal.adopted}</p>
                             </div>
                             <div className='mr-5 mt-6 mb-4 flex'>
-                                <p className='text-2xl leading-relaxed text-gray-600 dark:text-gray-400 '>Vrsta: Pas</p>
+                                <p className='text-2xl leading-relaxed text-gray-600 dark:text-gray-400 '>Vrsta: {animal.species}</p>
                             </div>
                         </div>
                         <div className='flex justify-center'>

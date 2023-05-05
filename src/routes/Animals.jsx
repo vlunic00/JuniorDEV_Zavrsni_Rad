@@ -2,7 +2,7 @@ import Footer from "../components/Footer"
 import Navbar from "../components/Navbar"
 import { initializeApp } from "firebase/app";
 import { getDatabase, ref, set, onValue } from "firebase/database";
-import { useState, useEffect } from "react"
+import { useState, useEffect } from "react";
 import AnimalCard from "../components/AnimalCard";
 import Overlay from "../components/Overlay";
 import AnimalModal from "../components/AnimalModal";
@@ -36,39 +36,31 @@ function writeToDatabase(animalId, animalName, animalSpecies, adoptedStatus, des
 
 
 function Animals(){
-    const [animalData, setAnimalData] = useState({
+    const [selectedAnimalData, setSelectedAnimalData] = useState({
         name: "",
         species: "",
-        adopted: false,
+        adopted: "",
         description: "",
         picture: ""
     })
 
     const [animalArray, setAnimalArray] = useState([])
+    const [animalData, setAnimalData] = useState({})
 
-    function appendToAnimalArray(object){
-        console.log(object)
-    }
-
-    const animalsRef = ref(db, 'animals');
-
-    function getAnimalData(){
-        console.log("a")
-        onValue(animalsRef, (snapshot) => {
-            const data = snapshot.val()
-            return data
-        })
-    }
     
     useEffect(() => {
-        const data = getAnimalData()
-        console.log(data)
-        Object.keys(data).map(el => {
-            setAnimalArray(current => [...current, data[el]])
+        onValue(ref(db, "animals"), snapshot => {
+        const tempData = snapshot.val()
+        setAnimalData(tempData)
+        console.log("a")
+    })
+},[])
+
+     useEffect(() => {
+        Object.keys(animalData).map(el => {
+            setAnimalArray(current => [...current, animalData[el]])
         })
-        console.log(animalArray)
-    },
-    [])
+    }, [animalData])
 
     const [isOpen, setIsOpen] = useState(false);
 
@@ -80,15 +72,45 @@ function Animals(){
         setIsOpen(false)
     }
 
-    return (
-        <>
-        <Navbar />
-        <AnimalCard open={openModal} />
-        {isOpen && (<Overlay close={closeModal}>{<AnimalModal close={closeModal}/>}</Overlay>)}
+    function fetchSelectedAnimal(animalName, animalDescription, animalAdopted, animalSpecies, animalPicture){
+        setSelectedAnimalData({
+            name: animalName,
+            description: animalDescription,
+            adopted: animalAdopted,
+            species: animalSpecies,
+            picture: animalPicture
+        }
+        )
+    }
 
-        <Footer />
-        </>
-    )
+    if(animalArray.length == 0){
+        console.log("loading")
+        return(
+            <>
+                <Navbar />
+                <div>
+                    <h1 className="font-bold text-white text-6xl">Loading...</h1>
+                </div>
+                <Footer />
+            </>
+        )
+    }
+    else{
+        console.log(animalData)
+        return (
+            <>
+            <Navbar />
+            <div className="flex">
+            {animalArray.map(el => (
+                <AnimalCard open={openModal} fetch={fetchSelectedAnimal} name={el.name} description={el.description} adopted={el.adopted} species={el.species} picture={el.picture} />
+            ))}
+            </div>
+            {isOpen && (<Overlay close={closeModal}>{<AnimalModal close={closeModal} animal={selectedAnimalData} />}</Overlay>)}
+    
+            <Footer />
+            </>
+        )
+    }
 }
 
 export default Animals
