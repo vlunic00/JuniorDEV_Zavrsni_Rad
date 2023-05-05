@@ -52,7 +52,6 @@ function Animals(){
         onValue(ref(db, "animals"), snapshot => {
         const tempData = snapshot.val()
         setAnimalData(tempData)
-        console.log("a")
     })
 },[])
 
@@ -84,7 +83,6 @@ function Animals(){
     }
 
     if(animalArray.length == 0){
-        console.log("loading")
         return(
             <>
                 <Navbar />
