@@ -22,7 +22,19 @@ function Donations(){
     };
     
     const app = initializeApp(firebaseConfig);
-    const db = getDatabase();
+    const db = getDatabase(app);
+    const reference = ref(db, 'donations')
+    const [donationId, setDonationId] = useState(5)
+
+    function writeToDatabase(donationItem, donationAmount, donationDescription, donationStatus){
+        set(ref(db, "donations/d" + donationId), {
+            item: donationItem,
+            amount: donationAmount,
+            description: donationDescription,
+            status: donationStatus
+        })
+        setDonationId(current => current + 1)
+    }
 
     const donationStatus = ["wanted", "offered", "done"]
 
@@ -39,7 +51,7 @@ function Donations(){
     }
 
     useEffect(() => {
-        onValue(ref(db, "donations"), snapshot => {
+        onValue(reference, snapshot => {
         const tempData = snapshot.val()
         setDonations(tempData)
         })
@@ -73,7 +85,7 @@ function Donations(){
                 <p className="text-white text-5xl ml-10 mb-6">Donirano:</p>
                 <Table donations={donations} status={donationStatus[2]} />
 
-                {isOpen && (<Overlay close={closeModal}>{<DonationModal close={closeModal} />}</Overlay>)}
+                {isOpen && (<Overlay close={closeModal}>{<DonationModal close={closeModal} writeToDatabase={writeToDatabase}/>}</Overlay>)}
 
                 <Footer />
             </>
