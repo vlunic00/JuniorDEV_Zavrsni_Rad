@@ -1,12 +1,14 @@
 import TableRow from "./TableRow"
 
-function Table({ donations }){
+function Table({ donations, status }){
+
+    const toDisplay = Object.keys(donations).filter(key => donations[key].status == status)
 
     return(
         <>
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg w-[80%] mx-auto mb-6">
             <table class="w-full text-m text-left text-gray-900">
-                <thead class="text-l text-gray-700 uppercase bg-gray-50/60">
+                <thead class="text-l text-gray-700 uppercase bg-gray-50/80">
                     <tr>
                         <th scope="col" class="px-6 py-3 w-[20%]">
                             Tip
@@ -23,8 +25,8 @@ function Table({ donations }){
                     </tr>
                 </thead>
                 <tbody>
-                    {Object.keys(donations).map(el => (
-                        <TableRow donation={donations[el]}/>
+                    {toDisplay.map(el => (
+                        <TableRow donation={donations[el]} status={status} />
                     ))}
                 </tbody>
             </table>

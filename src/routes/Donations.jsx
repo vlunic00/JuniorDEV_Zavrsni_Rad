@@ -4,6 +4,8 @@ import Navbar from "../components/Navbar"
 import { initializeApp } from "firebase/app";
 import { getDatabase, ref, set, onValue } from "firebase/database";
 import Table from "../components/Table";
+import Overlay from "../components/Overlay";
+import DonationModal from "../components/DonationModal";
 
 
 function Donations(){
@@ -22,7 +24,19 @@ function Donations(){
     const app = initializeApp(firebaseConfig);
     const db = getDatabase();
 
+    const donationStatus = ["wanted", "offered", "done"]
+
     const [donations, setDonations] = useState({})
+
+    const [isOpen, setIsOpen] = useState(false);
+
+    function openModal(){
+        setIsOpen(true)
+    }
+
+    function closeModal(){
+        setIsOpen(false)
+    }
 
     useEffect(() => {
         onValue(ref(db, "donations"), snapshot => {
@@ -30,6 +44,7 @@ function Donations(){
         setDonations(tempData)
         })
     },[])
+
 
     if(Object.keys(donations).length == 0){
         return(
@@ -47,9 +62,19 @@ function Donations(){
             <>
                 <Navbar />
                 <div className="w-[100%] flex justify-center">
-                    <button type="button" className="text-white bg-gradient-to-r from-teal-400 via-teal-500 to-teal-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-teal-300 dark:focus:ring-teal-800 font-medium rounded-lg text-xl px-8 py-5 text-center mx-auto my-6">Nova donacija</button>
+                    <button type="button" onClick={openModal} className="text-white bg-gradient-to-r from-teal-400 via-teal-500 to-teal-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-teal-300 dark:focus:ring-teal-800 font-medium rounded-lg text-xl px-8 py-5 text-center mx-auto my-6">Nova donacija</button>
                 </div>
-                <Table donations={donations} />
+                <p className="text-white text-5xl ml-10 mb-6">Tražimo:</p>
+                <Table donations={donations} status={donationStatus[0]} />
+                <div className="h-0 w-[90%] mx-auto mb-6 border-2 border-white"></div>
+                <p className="text-white text-5xl ml-10 mb-6">Nudi se:</p>
+                <Table donations={donations} status={donationStatus[1]} />
+                <div className="h-0 w-[90%] mx-auto mb-6 border-2 border-white"></div>
+                <p className="text-white text-5xl ml-10 mb-6">Donirano:</p>
+                <Table donations={donations} status={donationStatus[2]} />
+
+                {isOpen && (<Overlay close={closeModal}>{<DonationModal close={closeModal} />}</Overlay>)}
+
                 <Footer />
             </>
         )

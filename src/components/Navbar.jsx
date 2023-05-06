@@ -6,8 +6,8 @@ function Navbar() {
         <a href="/"><h1 className="font-bold text-white px-10 h-full text-5xl py-5">Salus</h1></a>
         <div className="flex pr-6">
         <ul className="flex text-white">
-            <li className="p-6 text-2xl hover:bg-[#4f4f4f] cursor-pointer"><a href="/zivotinje">Životinje</a></li>
-            <li className="p-6 text-2xl hover:bg-[#4f4f4f] cursor-pointer"><a href="/donacije">Donacije</a></li>
+            <a href="/zivotinje"><li className="p-6 h-[100%] text-2xl hover:bg-[#4f4f4f] cursor-pointer">Životinje</li></a>
+            <a href="/donacije"><li className="p-6 h-[100%] text-2xl hover:bg-[#4f4f4f] cursor-pointer">Donacije</li></a>
             <li className="p-6 text-2xl hover:bg-[#4f4f4f] cursor-pointer">Obavijesti</li>
             <li className="p-6 text-2xl hover:bg-[#4f4f4f] cursor-pointer">Unos</li>
         </ul>
