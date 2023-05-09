@@ -7,6 +7,7 @@ import AnimalCard from "../components/AnimalCard";
 import Overlay from "../components/Overlay";
 import AnimalModal from "../components/AnimalModal";
 import AdminContext from "../components/context";
+import { v4 as uuid } from "uuid";
 
 const firebaseConfig = {
     apiKey: "AIzaSyAm__WIbWXj6okAN5J2xiOgywbGOyOavy0",
@@ -20,12 +21,15 @@ const firebaseConfig = {
   };
 
 const app = initializeApp(firebaseConfig);
-const db = getDatabase();
+const db = getDatabase(app);
+
+const uniqueId = uuid()
 
 function writeToDatabase(animalId, animalName, animalSpecies, adoptedStatus, descriptionMessage, imageUrl){
-    const reference = ref(db, 'animals' + animalId)
+    const reference = ref(db, 'animals/' + animalId)
 
     set(reference, {
+        id: animalId,
         name: animalName,
         species: animalSpecies,
         adopted: adoptedStatus,
@@ -38,6 +42,7 @@ function writeToDatabase(animalId, animalName, animalSpecies, adoptedStatus, des
 
 function Animals({ changeRole }){
     const [selectedAnimalData, setSelectedAnimalData] = useState({
+        id: "",
         name: "",
         species: "",
         adopted: "",
@@ -72,8 +77,9 @@ function Animals({ changeRole }){
         setIsOpen(false)
     }
 
-    function fetchSelectedAnimal(animalName, animalDescription, animalAdopted, animalSpecies, animalPicture){
+    function fetchSelectedAnimal(animalId, animalName, animalDescription, animalAdopted, animalSpecies, animalPicture){
         setSelectedAnimalData({
+            id: animalId,
             name: animalName,
             description: animalDescription,
             adopted: animalAdopted,
@@ -100,10 +106,10 @@ function Animals({ changeRole }){
             <Navbar changeRole={changeRole}/>
             <div className="flex">
             {animalArray.map(el => (
-                <AnimalCard open={openModal} fetch={fetchSelectedAnimal} name={el.name} description={el.description} adopted={el.adopted} species={el.species} picture={el.picture} />
+                <AnimalCard open={openModal} fetch={fetchSelectedAnimal} id={el.id} name={el.name} description={el.description} adopted={el.adopted} species={el.species} picture={el.picture} />
             ))}
             </div>
-            {isOpen && (<Overlay close={closeModal}>{<AnimalModal close={closeModal} animal={selectedAnimalData} />}</Overlay>)}
+            {isOpen && (<Overlay close={closeModal}>{<AnimalModal write={writeToDatabase} close={closeModal} animal={selectedAnimalData} setAnimal={setSelectedAnimalData}/>}</Overlay>)}
     
             <Footer />
             </>

@@ -3,6 +3,7 @@ import { initializeApp } from "firebase/app";
 import { getDatabase, ref, set } from "firebase/database";
 import Footer from "../components/Footer"
 import Navbar from "../components/Navbar"
+import { v4 as uuid } from "uuid";
 
 function InputAnimal(){
 
@@ -20,21 +21,22 @@ function InputAnimal(){
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
 
-    const [animalId, setAnimalId] = useState(3)
+    const uniqueId = uuid()
     
-    function writeToDatabase(animalName, animalDescription, animalSpecies, animalPicture){
-        set(ref(db, "animals/a" + animalId), {
+    function writeToDatabase(animalId, animalName, animalDescription, animalSpecies, animalPicture){
+        set(ref(db, "animals/" + animalId), {
+            id: animalId,
             name: animalName,
             description: animalDescription,
             species: animalSpecies,
             adopted: false,
             picture: animalPicture
         })
-        console.log("zapisano")
-        setAnimalId(current => current + 1)
+        uniqueId = uuid()
     }
 
     const [formData, setFormData] = useState({
+        id: uniqueId,
         name: "",
         description: "",
         adopted: false,
@@ -76,7 +78,7 @@ function InputAnimal(){
                     <label htmlFor="picture" className="block mb-2 mt-5 ml-5 text-xl font-medium text-gray-900">Slika</label>
                     <input type="text" name="picture" value={formData.picture} id="picture" onChange={inputChange} className="bg-gray-50 border border-gray-300 text-gray-900 text-l rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-[30%] p-2.5 ml-5" placeholder="url (https://slika.jpg)" required />
                 </div>
-                <button type="button" onClick={() => writeToDatabase(formData.name, formData.description, formData.species, formData.picture)} className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-l w-full sm:w-auto px-5 py-2.5 mb-5 mt-2 ml-5 text-center">Dodaj</button>
+                <button type="button" onClick={() => writeToDatabase(uniqueId, formData.name, formData.description, formData.species, formData.picture)} className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-l w-full sm:w-auto px-5 py-2.5 mb-5 mt-2 ml-5 text-center">Dodaj</button>
             </div>
         </form>
         <Footer />
