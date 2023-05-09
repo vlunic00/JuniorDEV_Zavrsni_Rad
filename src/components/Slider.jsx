@@ -5,7 +5,7 @@ import {BsChevronCompactLeft, BsChevronCompactRight} from 'react-icons/bs'
 function Slider(){
     
     const [currentIndex, setCurrentIndex] = useState(0)
-    //useEffect(automaticSlideSwitch, [currentIndex])
+    useEffect(automaticSlideSwitch, [currentIndex])
 
     const slides = [
         {

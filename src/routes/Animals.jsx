@@ -2,10 +2,11 @@ import Footer from "../components/Footer"
 import Navbar from "../components/Navbar"
 import { initializeApp } from "firebase/app";
 import { getDatabase, ref, set, onValue } from "firebase/database";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import AnimalCard from "../components/AnimalCard";
 import Overlay from "../components/Overlay";
 import AnimalModal from "../components/AnimalModal";
+import AdminContext from "../components/context";
 
 const firebaseConfig = {
     apiKey: "AIzaSyAm__WIbWXj6okAN5J2xiOgywbGOyOavy0",
@@ -35,7 +36,7 @@ function writeToDatabase(animalId, animalName, animalSpecies, adoptedStatus, des
 
 
 
-function Animals(){
+function Animals({ changeRole }){
     const [selectedAnimalData, setSelectedAnimalData] = useState({
         name: "",
         species: "",
@@ -85,7 +86,7 @@ function Animals(){
     if(animalArray.length == 0){
         return(
             <>
-                <Navbar />
+                <Navbar changeRole={changeRole}/>
                 <div>
                     <h1 className="font-bold text-white text-6xl">Loading...</h1>
                 </div>
@@ -94,10 +95,9 @@ function Animals(){
         )
     }
     else{
-        console.log(animalData)
         return (
             <>
-            <Navbar />
+            <Navbar changeRole={changeRole}/>
             <div className="flex">
             {animalArray.map(el => (
                 <AnimalCard open={openModal} fetch={fetchSelectedAnimal} name={el.name} description={el.description} adopted={el.adopted} species={el.species} picture={el.picture} />

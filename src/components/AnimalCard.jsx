@@ -16,7 +16,7 @@ function AnimalCard({ open, fetch, name, description, adopted, species, picture 
     return(
     <>
     <motion.div onClick={() => {open(), fetch(name, description, adoptedStatus, species, picture)}} whileHover={{scale: 1.1}} className="max-w-[20%] m-5 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 cursor-pointer">
-            <img className="rounded-t-lg w-[100%] h-[300px]" src={"/images/" + picture} alt="" />
+            <img className="rounded-t-lg w-[100%] h-[300px]" src={picture} alt="" />
         <div className="p-5">
                 <h5 className="mb-2 text-2xl font-bold text-center tracking-tight text-gray-900 dark:text-white">{name}</h5>
             <div className="flex justify-between mt-4">

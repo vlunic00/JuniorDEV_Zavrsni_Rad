@@ -8,7 +8,7 @@ import Overlay from "../components/Overlay";
 import DonationModal from "../components/DonationModal";
 
 
-function Donations(){
+function Donations({ changeRole }){
 
     const firebaseConfig = {
         apiKey: "AIzaSyAm__WIbWXj6okAN5J2xiOgywbGOyOavy0",
@@ -61,7 +61,7 @@ function Donations(){
     if(Object.keys(donations).length == 0){
         return(
             <>
-                <Navbar />
+                <Navbar changeRole={changeRole}/>
                 <div>
                     <h1 className="font-bold text-white text-6xl">Loading...</h1>
                 </div>
@@ -72,7 +72,7 @@ function Donations(){
     else{
         return(
             <>
-                <Navbar />
+                <Navbar changeRole={changeRole}/>
                 <div className="w-[100%] flex justify-center">
                     <button type="button" onClick={openModal} className="text-white bg-gradient-to-r from-teal-400 via-teal-500 to-teal-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-teal-300 dark:focus:ring-teal-800 font-medium rounded-lg text-xl px-8 py-5 text-center mx-auto my-6">Nova donacija</button>
                 </div>

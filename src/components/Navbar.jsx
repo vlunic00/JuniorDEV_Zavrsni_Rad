@@ -1,5 +1,11 @@
+import { useContext } from "react"
+import AdminContext from "./context"
 
-function Navbar() {
+function Navbar({ changeRole }) {
+
+  const role = useContext(AdminContext)
+  console.log(role)
+
   return (
     <>
     <nav className="flex justify-between items-center h-24 w-full mx-auto pl-4 pr-7 bg-[#2e2e2e]">
@@ -8,8 +14,8 @@ function Navbar() {
         <ul className="flex text-white">
             <a href="/zivotinje"><li className="p-6 h-[100%] text-2xl hover:bg-[#4f4f4f] cursor-pointer">Životinje</li></a>
             <a href="/donacije"><li className="p-6 h-[100%] text-2xl hover:bg-[#4f4f4f] cursor-pointer">Donacije</li></a>
-            <li className="p-6 text-2xl hover:bg-[#4f4f4f] cursor-pointer">Obavijesti</li>
-            <li className="p-6 text-2xl hover:bg-[#4f4f4f] cursor-pointer">Unos</li>
+            <a href="/obavijesti"><li className="p-6 h-[100%] text-2xl hover:bg-[#4f4f4f] cursor-pointer">Obavijesti</li></a>
+            {role == "admin" && <a href="/unos"><li className="p-6 h-[100%] text-2xl hover:bg-[#4f4f4f] cursor-pointer">Unos</li></a>}
         </ul>
         <label
         className="inline-block pr-3 pl-6 my-6 hover:cursor-pointer text-white text-2xl"
@@ -24,6 +30,7 @@ function Navbar() {
             dark:checked:after:bg-primary dark:focus:before:shadow-[3px_-1px_0px_13px_rgba(255,255,255,0.4)] dark:checked:focus:before:shadow-[3px_-1px_0px_13px_#3b71ca]"
             type="checkbox"
             role="switch"
+            onChange={changeRole}
             id="flexSwitchCheckDefault" />
         </div>
     </nav>
