@@ -1,6 +1,6 @@
 import TableRow from "./TableRow"
 
-function Table({ donations, status }){
+function Table({ donations, status, change, deleteDonation }){
 
     const toDisplay = Object.keys(donations).filter(key => donations[key].status == status)
 
@@ -26,7 +26,7 @@ function Table({ donations, status }){
                 </thead>
                 <tbody>
                     {toDisplay.map(el => (
-                        <TableRow donation={donations[el]} status={status} />
+                        <TableRow donation={donations[el]} status={status} change={change} deleteDonation={deleteDonation}/>
                     ))}
                 </tbody>
             </table>

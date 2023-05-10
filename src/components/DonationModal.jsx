@@ -2,13 +2,14 @@ import { IoCloseCircleOutline } from 'react-icons/io5'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useState } from 'react'
 
-function DonationModal({ close, writeToDatabase }){
+function DonationModal({ close, role, writeToDatabase }){
 
     const [formData, setFormData] = useState({
+        id: "",
         item: "",
         amount: "",
         description: "",
-        status: "offered"
+        status: ""
     })
 
     const inputChange = (event) => {
@@ -41,8 +42,10 @@ function DonationModal({ close, writeToDatabase }){
                         </div>
                     </form>
                     <div className='w-[20%] relative'>
-                    <button type="button" onClick={() => writeToDatabase(formData.item, formData.amount, formData.description, formData.status)} className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-2xl absolute right-0 bottom-10 px-5 py-2.5 mb-2 focus:outline-none">Doniraj</button>
-                    </div>
+                    {role == "user" ? <button type="button" onClick={() => writeToDatabase(formData.item, formData.amount, formData.description, "offered")} className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-2xl absolute right-0 bottom-10 px-5 py-2.5 mb-2 focus:outline-none">Doniraj</button>
+                     : <button type="button" onClick={() => writeToDatabase(formData.item, formData.amount, formData.description, "wanted")} className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-2xl absolute right-0 bottom-10 px-5 py-2.5 mb-2 focus:outline-none">Doniraj</button>
+                    }
+                    </div> 
                     <div className='w-[45%] right-0 text-center mt-3'>
                         <h2 className='text-5xl text-gray-700 font-bold'>Hvala Vam!</h2>
                         <p className='text-m italic text-gray-600 mt-2'>Azil Salus u potpunosti je neprofitna udruga koja uvelike ovisi o donacijama dobrih ljudi. Hvala Vam na ovoj velikodušnoj donaciji koja će uljepšati život našim predivnim životinjama.</p>

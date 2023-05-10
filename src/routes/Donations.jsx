@@ -1,14 +1,18 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import Footer from "../components/Footer"
 import Navbar from "../components/Navbar"
 import { initializeApp } from "firebase/app";
-import { getDatabase, ref, set, onValue } from "firebase/database";
+import { getDatabase, ref, set, onValue, remove } from "firebase/database";
 import Table from "../components/Table";
 import Overlay from "../components/Overlay";
 import DonationModal from "../components/DonationModal";
+import AdminContext from "../components/context";
+import { v4 as uuid } from "uuid"
 
 
 function Donations({ changeRole }){
+
+    const role = useContext(AdminContext)
 
     const firebaseConfig = {
         apiKey: "AIzaSyAm__WIbWXj6okAN5J2xiOgywbGOyOavy0",
@@ -24,16 +28,30 @@ function Donations({ changeRole }){
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
     const reference = ref(db, 'donations')
-    const [donationId, setDonationId] = useState(5)
+    const uniqueId = uuid()
 
     function writeToDatabase(donationItem, donationAmount, donationDescription, donationStatus){
-        set(ref(db, "donations/d" + donationId), {
+        set(ref(db, "donations/" + uniqueId), {
+            id: uniqueId,
             item: donationItem,
             amount: donationAmount,
             description: donationDescription,
             status: donationStatus
         })
-        setDonationId(current => current + 1)
+    }
+
+    function changeDonationStatus(donationId, donationItem, donationAmount, donationDescription, donationStatus){
+        set(ref(db, "donations/" + donationId), {
+            id: donationId,
+            item: donationItem,
+            amount: donationAmount,
+            description: donationDescription,
+            status: donationStatus
+        })
+    }
+    
+    function deleteDonation(donationId){
+        remove(ref(db, "donations/" + donationId))
     }
 
     const donationStatus = ["wanted", "offered", "done"]
@@ -77,15 +95,15 @@ function Donations({ changeRole }){
                     <button type="button" onClick={openModal} className="text-white bg-gradient-to-r from-teal-400 via-teal-500 to-teal-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-teal-300 dark:focus:ring-teal-800 font-medium rounded-lg text-xl px-8 py-5 text-center mx-auto my-6">Nova donacija</button>
                 </div>
                 <p className="text-white text-5xl ml-10 mb-6">Tražimo:</p>
-                <Table donations={donations} status={donationStatus[0]} />
+                <Table donations={donations} status={donationStatus[0]} change={changeDonationStatus} deleteDonation={deleteDonation} />
                 <div className="h-0 w-[90%] mx-auto mb-6 border-2 border-white"></div>
                 <p className="text-white text-5xl ml-10 mb-6">Nudi se:</p>
-                <Table donations={donations} status={donationStatus[1]} />
+                <Table donations={donations} status={donationStatus[1]} change={changeDonationStatus} deleteDonation={deleteDonation} />
                 <div className="h-0 w-[90%] mx-auto mb-6 border-2 border-white"></div>
                 <p className="text-white text-5xl ml-10 mb-6">Donirano:</p>
-                <Table donations={donations} status={donationStatus[2]} />
+                <Table donations={donations} status={donationStatus[2]} change={changeDonationStatus} deleteDonation={deleteDonation} />
 
-                {isOpen && (<Overlay close={closeModal}>{<DonationModal close={closeModal} writeToDatabase={writeToDatabase}/>}</Overlay>)}
+                {isOpen && (<Overlay close={closeModal}>{<DonationModal close={closeModal} role={role} writeToDatabase={writeToDatabase}/>}</Overlay>)}
 
                 <Footer />
             </>
