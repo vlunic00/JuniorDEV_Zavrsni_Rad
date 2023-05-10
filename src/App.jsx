@@ -5,7 +5,7 @@ import Animals from "./routes/Animals"
 import Donations from "./routes/Donations"
 import AdminContext from "./components/context"
 import InputAnimal from "./routes/InputAnimal"
-import Info from "./components/Info"
+import Info from "./routes/Info"
 
 function App() {
   

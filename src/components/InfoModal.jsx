@@ -2,7 +2,7 @@ import { IoCloseCircleOutline } from 'react-icons/io5'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useState } from 'react'
 
-function InfoModal({ close, writeToDatabase }){
+function InfoModal({ close, role, writeToDatabase }){
 
     const [formData, setFormData] = useState({
         title: "",
@@ -49,10 +49,12 @@ function InfoModal({ close, writeToDatabase }){
                             <label htmlFor="description" className="block mb-2 mt-5 ml-5 text-xl font-medium text-gray-900">Obavijest</label>
                             <textarea id="body" name="body" type="text" rows="4" value={formData.body} onChange={inputChange} className="block p-2.5 w-[100%] ml-5 text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 " placeholder="Obavijest..."></textarea>
                         </div>
+                        {role == "admin" &&
                         <div className="flex items-center mb-4 ml-6 mt-4">
                             <input id="important" type="checkbox" value={formData.important} onChange={changeImportantStatus} className="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500" />
                             <label htmlFor="default-checkbox" className="ml-2 text-l font-medium text-gray-900">Važno</label>
                         </div>
+                        }
                     </form>
                     <div className='w-[20%] relative'>
                     <button type="button" onClick={() => writeToDatabase(formData.title, formData.body, formData.important, day, month + 1, year)} className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-2xl absolute right-0 bottom-10 px-5 py-2.5 mb-2 mr-4 focus:outline-none">Dodaj</button>

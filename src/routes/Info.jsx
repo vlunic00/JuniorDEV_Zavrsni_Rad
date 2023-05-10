@@ -1,13 +1,17 @@
-import Footer from "./Footer"
-import Navbar from "./Navbar"
+import Footer from "../components/Footer"
+import Navbar from "../components/Navbar"
 import { initializeApp } from "firebase/app";
-import { getDatabase, ref, set, onValue } from "firebase/database";
-import { useState, useEffect } from "react";
-import InfoCard from "./InfoCard";
+import { getDatabase, ref, set, onValue, remove } from "firebase/database";
+import { useState, useEffect, useContext } from "react";
+import InfoCard from "../components/InfoCard";
 import Overlay from "../components/Overlay";
-import InfoModal from "./InfoModal";
+import InfoModal from "../components/InfoModal";
+import AdminContext from "../components/context";
+import { v4 as uuid } from "uuid"
 
 function Info({changeRole}){
+
+    const role = useContext(AdminContext)
 
     const firebaseConfig = {
         apiKey: "AIzaSyAm__WIbWXj6okAN5J2xiOgywbGOyOavy0",
@@ -23,11 +27,12 @@ function Info({changeRole}){
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
     const reference = ref(db, 'info')
-    const [infoId, setInfoId] = useState(5)
     const [infoList, setInfoList] = useState([])
+    const uniqueId = uuid()
 
     function writeToDatabase(infoTitle, infoBody, infoImportant, infoDay, infoMonth, infoYear){
-        set(ref(db, "info/d" + infoId), {
+        set(ref(db, "info/" + uniqueId), {
+            id: uniqueId,
             title: infoTitle,
             body: infoBody,
             important: infoImportant,
@@ -35,7 +40,10 @@ function Info({changeRole}){
             month: infoMonth,
             year: infoYear
         })
-        setInfoId(current => current + 1)
+    }
+
+    function deleteInfo(infoId){
+        remove(ref(db, "info/" + infoId))
     }
 
     useEffect(() => {
@@ -62,9 +70,9 @@ function Info({changeRole}){
             <button type="button" onClick={openModal} className="text-white bg-gradient-to-r from-teal-400 via-teal-500 to-teal-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-teal-300 dark:focus:ring-teal-800 font-medium rounded-lg text-xl px-8 py-5 text-center mx-auto my-6">Nova obavijest</button>
         </div>
         {Object.keys(infoList).map(el => (
-            <InfoCard info={infoList[el]}/>
+            <InfoCard info={infoList[el]} deleteInfo={deleteInfo}/>
         ))}
-        {isOpen && (<Overlay close={closeModal}>{<InfoModal close={closeModal} writeToDatabase={writeToDatabase}/>}</Overlay>)}
+        {isOpen && (<Overlay close={closeModal}>{<InfoModal close={closeModal} role={role} writeToDatabase={writeToDatabase}/>}</Overlay>)}
         <Footer />
         </>
     )

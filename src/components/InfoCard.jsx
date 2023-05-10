@@ -1,8 +1,9 @@
 import { useState, useContext } from "react"
+import { BsFillTrash3Fill } from "react-icons/bs"
 import AdminContext from "./context"
 
 
-function InfoCard({ info }){
+function InfoCard({ info, deleteInfo }){
 
     const role = useContext(AdminContext)
 
@@ -17,7 +18,11 @@ function InfoCard({ info }){
             </div>
             <div className="w-[100%] flex justify-between">
                 <p className="text-xl font-bold pt-6 ml-4 text-gray-700 right-5">{info.day}.{info.month}.{info.year}</p>
-                {role=="admin" && <button type="button" class="text-white bg-gradient-to-r from-pink-400 via-pink-500 to-pink-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-pink-300  font-medium rounded-lg text-mm px-8 py-3 text-center mr-6 mt-2">Uredi</button>}
+                {role=="admin" && 
+                <div onClick={() => deleteInfo(info.id)} className="mr-6 mt-2 cursor-pointer">
+                    <BsFillTrash3Fill size={30} color="gray"/>
+                </div>
+                }
             </div>
         </div>
         </>
