@@ -1,5 +1,5 @@
 import { Routes, Route } from "react-router-dom"
-import { useState, useContext } from "react"
+import { useState } from "react"
 import Root from './routes/Root'
 import Animals from "./routes/Animals"
 import Donations from "./routes/Donations"

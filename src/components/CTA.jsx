@@ -19,6 +19,21 @@ function CTA(){
                     </div>
                     <img src="/images/dog.png" alt="Dog image" className="h-[450px]"></img>
                 </div>
+                <h1 className="text-white text-6xl mt-16 relative left-[83%]">Naš rad</h1>
+                <div className="border-2 border-white mt-2 w-[60%] relative left-[37%]" />
+                <div className="text-center mt-7 mb-7">
+                    <h2 className="text-white text-4xl">Udomljeno</h2>
+                    <h2 className="text-white text-8xl font-bold mt-1 mb-1">400+</h2>
+                    <h2 className="text-white text-4xl">Životinja</h2>
+                </div>
+                <div className="text-center mt-14 mb-7">
+                    <h2 className="text-white text-4xl">Briga o životinjama</h2>
+                    <h2 className="text-white text-8xl font-bold mt-1 mb-1">24/7</h2>
+                </div>
+                <div className="text-center mt-14 mb-7">
+                    <h2 className="text-white text-4xl">Fokus na poboljšanje života naših životinja</h2>
+                    <h2 className="text-white text-8xl font-bold mt-1 mb-1">100%</h2>
+                </div>
             </div>
         </>
     )

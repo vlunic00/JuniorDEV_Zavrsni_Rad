@@ -55,7 +55,7 @@ function InputAnimal(){
     return(
         <>
         <Navbar />
-        <form className="bg-gray-300 w-[70%] rounded-md mx-auto mt-5 mb-5 flex justify-between">
+        <form className="bg-gray-300 w-[60%] rounded-md mx-auto mt-5 mb-5 flex justify-between">
             <div className="w-[100%]">
                 <div className="mb-3">
                     <label htmlFor="name" className="block mb-2 mt-5 ml-5 text-xl font-medium text-gray-900">Ime</label>
