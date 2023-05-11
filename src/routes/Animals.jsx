@@ -140,7 +140,7 @@ function Animals({ changeRole }){
                     <GiCancel size={30} color="white"/>
                 </div>}
             </div>
-            <div className="flex">
+            <div className="flex flex-wrap">
                 
             {animalArray.filter((el) => {
                 console.log(filterBy)
